@@ -24,48 +24,51 @@
 //     console.log("Character Count:", analysisResult.characterCount);
 //     console.log("Average Word Length:", analysisResult.averageWordLength);
 
+
+
+
 // Function to prompt user for text input
-function getTextFromUser() {
-    let text = prompt("Please enter any text:");
-    return text;
-}
+// 
 
-// Function to analyze the text and calculate statistics
-function analyzeText(text) {
-    let words = text.match(/\w+/g);
-    let uniqueWords = new Set(words);
-    let longestWord = words.reduce((a, b) => a.length >= b.length ? a : b);
-    
-    let wordFrequency = {};
-    words.forEach(word => {
-        wordFrequency[word] = (wordFrequency[word] || 0) + 1;
-    });
-    
-    return {
-        wordCount: words.length,
-        uniqueWordCount: uniqueWords.size,
-        longestWord: longestWord,
-        wordFrequency: wordFrequency
-    };
-}
-
-// Main function to run the text analysis tool
-function runTextAnalysis() {
-    let text = getTextFromUser();
-    
-    if (text) {
-        let analysisResult = analyzeText(text);
-        console.log("Number of words in the text: " + analysisResult.wordCount);
-        console.log("Number of unique words in the text: " + analysisResult.uniqueWordCount);
-        console.log("Longest word in the text: " + analysisResult.longestWord);
-        console.log("Word frequency in the text:");
-        for (let word in analysisResult.wordFrequency) {
-            console.log(`${word}: ${analysisResult.wordFrequency[word]}`);
-        }
-    } else {
-        console.log("Invalid input. Please enter a valid text.");
+function getTextStatistics(text) {
+    // Überprüfe, ob der eingegebene Text gültig ist
+    if (!text || typeof text !== 'string') {
+        return "Ungültiger Text. Bitte geben Sie einen Text ein.";
     }
+
+    // Teile den Text in Wörter auf
+    const words = text.split(/\s+/);
+
+    // Zähle die Anzahl der Wörter
+    const wordCount = words.length;
+
+    // Zähle die Anzahl unterschiedlicher Wörter
+    const uniqueWords = new Set(words);
+    const uniqueWordCount = uniqueWords.size;
+
+    // Finde das längste Wort
+    const longestWord = words.reduce((longest, current) => (current.length > longest.length ? current : longest), '');
+
+    // Zähle die Häufigkeit jedes Wortes
+    const wordFrequency = {};
+    words.forEach(word => {
+        const lowercaseWord = word.toLowerCase();
+        wordFrequency[lowercaseWord] = (wordFrequency[lowercaseWord] || 0) + 1;
+    });
+
+    // Erstelle die Ausgabe
+    const output = `
+        Wortanzahl: ${wordCount}
+        Unterschiedliche Wörter: ${uniqueWordCount}
+        Wortfrequenz: ${Object.entries(wordFrequency).map(([word, count]) => `${word}: ${count}`).join(', ')}
+        Längstes Wort: ${longestWord}
+    `;
+
+    return output;
 }
 
-// Run the text analysis tool
-runTextAnalysis();
+
+// Beispielaufruf
+const userInput = prompt("Geben Sie einen Text ein:");
+const result = getTextStatistics(userInput);
+console.log(result);
