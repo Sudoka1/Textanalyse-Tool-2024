@@ -17,7 +17,7 @@
      };
      }
     
-     const text = "This 4essssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssseis my text for text analyse tool 2024 !!!";
+     const text = "This is my text for text analyse tool 2024 !!!";
      const analysisResult = analyzeText(text);
     
      console.log("Word Count:", analysisResult.wordCount);
